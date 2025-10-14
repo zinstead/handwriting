@@ -7,9 +7,10 @@
   </head>
   <body>
     <script>
-      const p1 = Promise.reject(123);
-      const p2 = Promise.reject(p1);
-      console.log(p2);
+      const map = new Map();
+      map.set("name", "jack");
+      map.set("age", 18);
+      console.log(Object.keys(map));
     </script>
   </body>
 </html>
