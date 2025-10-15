@@ -7,10 +7,17 @@
   </head>
   <body>
     <script>
-      const map = new Map();
-      map.set("name", "jack");
-      map.set("age", 18);
-      console.log(Object.keys(map));
+      Array.prototype._push = function (...values) {
+        for (const val of values) {
+          this[this.length + 1] = val;
+        }
+        return this.length;
+      };
+
+      const arr = [1, 2];
+      console.log(arr._push(3));
+
+      console.log(arr);
     </script>
   </body>
 </html>
