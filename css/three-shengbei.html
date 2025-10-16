@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sticky 示例</title>
+    <style>
+      .container {
+        padding-left: 100px;
+        padding-right: 200px;
+      }
+      .container::after {
+        content: "";
+        display: block;
+        clear: both;
+      }
+      .box {
+        height: 200px;
+        float: left;
+      }
+      .center {
+        width: 100%;
+        background-color: yellow;
+      }
+      .left {
+        width: 100px;
+        background-color: red;
+        margin-left: -100%;
+        position: relative;
+        left: -100px;
+      }
+      .right {
+        width: 200px;
+        background-color: skyblue;
+        margin-right: -200px;
+      }
+      .head,
+      .foot {
+        background-color: gray;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="head"></div>
+    <div class="container">
+      <div class="center box"></div>
+      <div class="left box"></div>
+      <div class="right box"></div>
+    </div>
+    <div class="foot"></div>
+  </body>
+</html>

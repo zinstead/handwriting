@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sticky 示例</title>
+    <style>
+      .container {
+        height: 200px;
+        display: flex;
+      }
+      .center {
+        flex: 1;
+        background-color: yellow;
+      }
+      .left {
+        width: 100px;
+        background-color: red;
+        order: -1;
+      }
+      .right {
+        width: 200px;
+        background-color: skyblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="center box"></div>
+      <div class="left box"></div>
+      <div class="right box"></div>
+    </div>
+  </body>
+</html>
