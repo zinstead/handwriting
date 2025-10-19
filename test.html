@@ -7,17 +7,24 @@
   </head>
   <body>
     <script>
-      Array.prototype._push = function (...values) {
-        for (const val of values) {
-          this[this.length + 1] = val;
+      function parseUrlParams(url) {
+        const paramsStr = url.split("?")[1];
+        const params = paramsStr.split("&");
+        const res = {};
+        for (const item of params) {
+          const [key, value] = item.split("=");
+          const parsedValue = decodeURIComponent(value);
+          if (res[key] === undefined) {
+            res[key] = parsedValue;
+          } else {
+            res[key] = [res[key], parsedValue];
+          }
         }
-        return this.length;
-      };
-
-      const arr = [1, 2];
-      console.log(arr._push(3));
-
-      console.log(arr);
+        return res;
+      }
+      let url =
+        "http://www.domain.com/?user=anonymous&id=123&id=456&city=%E5%8C%97%E4%BA%AC&enabled";
+      console.log(parseUrlParams(url));
     </script>
   </body>
 </html>
