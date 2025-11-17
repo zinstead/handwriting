@@ -4,8 +4,8 @@ function throttle(fn, delay = 300) {
   return function (...args) {
     if (timer) return;
     timer = setTimeout(() => {
-      fn.apply(this, args);
       timer = null;
+      fn.apply(this, args);
     }, delay);
   };
 }
@@ -16,8 +16,8 @@ function throttle(fn, delay = 300) {
   return function (...args) {
     const curTime = Date.now();
     if (curTime - preTime > delay) {
-      fn.apply(this, args);
       preTime = curTime;
+      fn.apply(this, args);
     }
   };
 }

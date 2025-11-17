@@ -4,9 +4,9 @@ Function.prototype._call = function (context, ...args) {
   }
   // 如果context是null或undefined
   context = context || window;
-  const s = Symbol("key");
-  context[s] = this;
-  const result = context[s](...args);
-  delete context[s];
+  const fn = Symbol();
+  context[fn] = this;
+  const result = context[fn](...args);
+  delete context[fn];
   return result;
 };
