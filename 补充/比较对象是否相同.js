@@ -20,11 +20,7 @@ function compare(obj1, obj2, map = new Map()) {
   if (keys1.length !== keys2.length) {
     return false;
   }
-  const set = new Set(keys2);
   for (let key of keys1) {
-    if (!set.has(key)) {
-      return false;
-    }
     if (!compare(obj1[key], obj2[key])) {
       return false;
     }
