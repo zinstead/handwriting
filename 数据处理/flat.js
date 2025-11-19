@@ -1,5 +1,5 @@
 Array.prototype._flat = function (depth = 1) {
-  if (depth === 0) {
+  if (depth < 1) {
     return this.slice();
   }
   return this.reduce((pre, cur) => {

@@ -27,8 +27,8 @@ function MyURL(url) {
     const paramStr = rest.slice(i + 1);
     const params = {};
     paramStr.split("&").forEach((str) => {
-      const [key, value] = decodeURIComponent(str).split("=");
-      params[key] = value;
+      const [key, value] = str.split("=");
+      params[decodeURIComponent(key)] = decodeURIComponent(value);
     });
     this.params = params;
     rest = rest.slice(0, i);
