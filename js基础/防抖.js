@@ -1,5 +1,6 @@
 // 延迟执行
-function debounce(fn, delay = 300) {
+function debounce(fn, options = {}) {
+  const { delay = 300 } = options;
   let timer = null;
   return function (...args) {
     clearTimeout(timer);
@@ -10,19 +11,29 @@ function debounce(fn, delay = 300) {
 }
 
 // 立即执行(传入immediate参数)
-function debounce(fn, delay = 300, immediate = false) {
+function debounce(fn, options = {}) {
+  const { delay = 300, immediate = false } = options;
   let timer = null;
-  return function (...args) {
+
+  function debounced(...args) {
+    const context = this;
     const callNow = immediate && !timer;
     clearTimeout(timer);
     timer = setTimeout(() => {
       timer = null;
       if (!immediate) {
-        fn.apply(this, args);
+        fn.apply(context, args);
       }
     }, delay);
     if (callNow) {
-      fn.apply(this, args);
+      fn.apply(context, args);
     }
+  }
+
+  debounced.cancel = function () {
+    clearTimeout(timer);
+    timer = null;
   };
+
+  return debounced;
 }

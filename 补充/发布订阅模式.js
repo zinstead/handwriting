@@ -1,34 +1,28 @@
-class EventBus {
+class EventEmitter {
   constructor() {
     this.events = {};
   }
 
-  on(event, callback) {
+  on(event, cb) {
     if (!this.events[event]) {
       this.events[event] = [];
     }
-    this.events[event].push(callback);
+    this.events[event].push(cb);
   }
 
-  off(event, callback) {
-    if (!this.events[event]) {
-      return;
-    }
-    this.events[event] = this.events[event].filter((item) => item !== callback);
+  off(event, cb) {
+    if (!this.events[event]) return;
+    this.events[event] = this.events[event].filter((fn) => fn !== cb);
   }
 
   emit(event, ...args) {
-    if (!this.events[event]) {
-      return;
-    }
-    this.events[event].forEach((cb) => {
-      cb(...args);
-    });
+    if (!this.events[event]) return;
+    this.events[event].forEach((cb) => cb(...args));
   }
 
-  once(event, callback) {
+  once(event, cb) {
     const wrapper = (...args) => {
-      callback(...args);
+      cb(...args);
       this.off(event, wrapper);
     };
     this.on(event, wrapper);
