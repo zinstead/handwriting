@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="output"></div>
+    <iframe
+      src="./page2.html"
+      frameborder="0"
+      width="200"
+      height="200"
+    ></iframe>
+    <script>
+      const channel = new MessageChannel();
+      const output = document.querySelector(".output");
+      const iframe = document.querySelector("iframe");
+
+      // 等待 iframe 加载
+      iframe.addEventListener("load", onLoad);
+
+      function onLoad() {
+        // 在 port1 上监听消息
+        channel.port1.onmessage = onMessage;
+
+        // 将 port 2 传输到 iframe
+        iframe.contentWindow.postMessage("来自主页的您好！", "*", [
+          channel.port2,
+        ]);
+      }
+
+      // 处理 port 1 收到的消息
+      function onMessage(e) {
+        output.innerHTML = e.data;
+      }
+    </script>
+  </body>
+</html>

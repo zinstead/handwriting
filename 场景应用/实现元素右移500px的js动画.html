@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: skyblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+    <script>
+      function moveToRight() {
+        const box = document.querySelector(".box");
+        const speed = 0.1;
+        const distance = 500;
+        let startTime = null;
+
+        function step(timestamp) {
+          if (!startTime) startTime = timestamp;
+          const diff = timestamp - startTime;
+          const curDistance = diff * speed;
+          box.style.transform = `translate(${curDistance}px)`;
+          if (curDistance < distance) {
+            requestAnimationFrame(step);
+          }
+        }
+        requestAnimationFrame(step);
+      }
+
+      moveToRight();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Child</title>
+  </head>
+  <body>
+    <h1>Child Page</h1>
+
+    <script>
+      // 接收来自父页面的消息
+      window.addEventListener("message", (event) => {
+        console.log("子页面收到消息：", event.data, event.origin);
+
+        // 回复给父页面
+        event.source.postMessage("收到！这是来自子页面的回复。", event.origin);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 创建一个 MessageChannel
+      const channel = new MessageChannel();
+
+      // port1 和 port2 可以在不同上下文间传递
+      const { port1, port2 } = channel;
+
+      // 监听 port1 的消息
+      port1.onmessage = (event) => {
+        console.log("port1 收到消息:", event.data);
+      };
+
+      // 监听 port2 的消息
+      port2.onmessage = (event) => {
+        console.log("port2 收到消息:", event.data);
+      };
+
+      // 发送消息
+      port1.postMessage("Hello from port1");
+      port2.postMessage("Hello from port2");
+
+      // 输出结果（顺序可能因事件循环而不同）:
+      // port1 收到消息: Hello from port2
+      // port2 收到消息: Hello from port1
+    </script>
+  </body>
+</html>

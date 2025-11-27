@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 1. BroadcastChannel
+      const bc = new BroadcastChannel("my_channel");
+      bc.onmessage = (e) => {
+        console.log("收到:", e.data);
+      };
+      bc.postMessage({ type: "UPDATE", payload: 123 });
+
+      // 2. localStorage
+      window.addEventListener("storage", (e) => {
+        if (e.key === "msg") {
+          console.log(e.newValue);
+        }
+      });
+      setTimeout(() => {
+        localStorage.setItem("msg", JSON.stringify({ name: "alan", age: 18 }));
+      }, 5000);
+    </script>
+  </body>
+</html>

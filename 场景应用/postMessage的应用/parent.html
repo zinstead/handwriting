@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Parent</title>
+  </head>
+  <body>
+    <h1>Parent Page</h1>
+
+    <iframe src="child.html" id="child" width="300" height="200"></iframe>
+
+    <script>
+      const childFrame = document.getElementById("child");
+
+      // 接收来自子页面的消息
+      window.addEventListener("message", (event) => {
+        console.log("父页面收到消息：", event.data, event.origin);
+      });
+
+      // 2 秒后向子页面发送消息
+      setTimeout(() => {
+        childFrame.contentWindow.postMessage("你好，来自父页面", "*");
+      }, 2000);
+    </script>
+  </body>
+</html>
