@@ -1,21 +1,20 @@
 function arrToTree(objs) {
   const map = new Map();
-  objs.forEach((obj) => {
+  for (let obj of objs) {
     map.set(obj.id, obj);
-  });
+  }
   const res = [];
-  objs.forEach((obj) => {
+  for (let obj of objs) {
     if (obj.pid === null) {
       res.push(obj);
     } else {
-      const p = map.get(obj.pid);
-      if (Array.isArray(p.children)) {
-        p.children.push(obj);
-      } else {
-        p.children = [obj];
+      const pObj = map.get(obj.pid);
+      if (!pObj.children) {
+        pObj.children = [];
       }
+      pObj.children.push(obj);
     }
-  });
+  }
   return res;
 }
 
