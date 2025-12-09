@@ -1,16 +1,14 @@
-function compareVersion(version1, version2) {
-  const m = version1.length,
-    n = version2.length;
+var compareVersion = function (version1, version2) {
   let i = 0,
     j = 0;
-  while (i < m || j < n) {
+  while (i < version1.length || j < version2.length) {
     let num1 = 0;
-    while (i < m && version1[i] !== ".") {
+    while (i < version1.length && version1[i] !== ".") {
       num1 = num1 * 10 + (version1[i] - "0");
       i++;
     }
     let num2 = 0;
-    while (j < n && version2[j] !== ".") {
+    while (j < version2.length && version2[j] !== ".") {
       num2 = num2 * 10 + (version2[j] - "0");
       j++;
     }
@@ -24,4 +22,4 @@ function compareVersion(version1, version2) {
     }
   }
   return 0;
-}
+};

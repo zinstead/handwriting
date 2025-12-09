@@ -1,17 +1,16 @@
 class Node {
-  constructor(key, value) {
+  constructor(key, value, prev, next) {
     this.key = key;
     this.value = value;
-    this.prev = null;
-    this.next = null;
+    this.prev = prev;
+    this.next = next;
   }
 }
 
 class LRUCache {
-  constructor(capacity) {
-    this.capacity = capacity;
+  constructor(maxCapacity) {
+    this.maxCapacity = maxCapacity;
     this.map = new Map();
-
     this.head = new Node();
     this.tail = new Node();
     this.head.next = this.tail;
@@ -20,9 +19,12 @@ class LRUCache {
 
   get(key) {
     const node = this.map.get(key);
-    if (!node) return -1;
-    this._moveToHead(node);
-    return node.value;
+    if (node) {
+      this._moveToHead(node);
+      return node.value;
+    } else {
+      return undefined;
+    }
   }
 
   put(key, value) {
@@ -31,34 +33,32 @@ class LRUCache {
       node.value = value;
       this._moveToHead(node);
     } else {
+      if (this.map.size >= this.maxCapacity) {
+        const node = this._removeTail();
+        this.map.delete(node.key);
+      }
       const node = new Node(key, value);
       this._addToHead(node);
       this.map.set(key, node);
-      if (this.map.size > this.capacity) {
-        const lastNode = this._removeTail();
-        this.map.delete(lastNode.key);
-      }
     }
+  }
+
+  _addToHead(node) {
+    const first = this.head.next;
+    node.prev = this.head;
+    node.next = first;
+    this.head.next = node;
+    first.prev = node;
+  }
+
+  _removeNode(node) {
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
   }
 
   _moveToHead(node) {
     this._removeNode(node);
     this._addToHead(node);
-  }
-
-  _removeNode(node) {
-    const prev = node.prev;
-    const next = node.next;
-    prev.next = next;
-    next.prev = prev;
-  }
-
-  _addToHead(node) {
-    const firstNode = this.head.next;
-    node.prev = this.head;
-    node.next = firstNode;
-    this.head.next = node;
-    firstNode.prev = node;
   }
 
   _removeTail() {

@@ -1,11 +1,13 @@
 class Node {
-  constructor(key, value, ttl = null) {
+  constructor(key, value, ttl) {
     this.key = key;
     this.value = value;
-    this.ttl = ttl;
-    this.expires = ttl ? Date.now() + ttl : null;
     this.prev = null;
     this.next = null;
+
+    this.ttl = ttl;
+    // 1. 虚拟节点的过期时间
+    this.expires = ttl ? Date.now() + ttl : Infinity;
   }
 }
 
@@ -21,37 +23,48 @@ class LRUCache {
 
   get(key) {
     const node = this.map.get(key);
+    // 2. get方法的三个步骤
     if (!node) return undefined;
     if (node.expires < Date.now()) {
+      this._removeNode(node);
       this.map.delete(key);
-      this.removeNode(node);
       return undefined;
     }
-    this._moveToHead({ ...node, expires: Date.now() + node.ttl });
+    node.expires = Date.now() + node.ttl;
+    this._moveToHead(node);
     return node.value;
   }
 
-  set(key, value, ttl) {
+  put(key, value, ttl) {
     const node = this.map.get(key);
     if (node) {
+      // 3. 更新节点时要更新value，ttl和expires
       node.value = value;
       node.ttl = ttl;
+      node.expires = Date.now() + ttl;
       this._moveToHead(node);
     } else {
       if (this.size() >= this.maxCapacity) {
-        const tail = this._removeTail();
-        this.map.delete(tail.key);
+        const node = this._removeTail();
+        this.map.delete(node.key);
       }
-      const head = new Node(key, value, ttl);
-      this._addToHead(head);
-      this.map.set(key, head);
+      const node = new Node(key, value, ttl);
+      this._addToHead(node);
+      this.map.set(key, node);
     }
   }
 
+  _addToHead(node) {
+    const first = this.head.next;
+    node.prev = this.head;
+    node.next = first;
+    this.head.next = node;
+    first.prev = node;
+  }
+
   _removeNode(node) {
-    const prev = node.prev;
-    prev.next = node.next;
-    node.next.prev = prev;
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
   }
 
   _moveToHead(node) {
@@ -59,27 +72,25 @@ class LRUCache {
     this._addToHead(node);
   }
 
-  _addToHead(node) {
-    const first = this.head.next;
-    this.head.next = node;
-    first.prev = node;
-    node.next = first;
-    node.prev = this.head;
-  }
-
   _removeTail() {
-    const last = this.tail.prev;
-    last.prev.next = this.tail;
-    this.tail.prev = last.prev;
-    return last;
+    const node = this.tail.prev;
+    this._removeNode(node);
+    return node;
   }
 
-  _size() {
-    for (const [key, node] of this.map) {
-      if (node.expires < Date.now()) {
-        this._removeNode(node);
-        this.map.delete(key);
+  size() {
+    const now = Date.now();
+    const expiredKeys = [];
+    // 4. 不建议一边迭代一边删除
+    for (let node of this.map.values()) {
+      if (node.expires < now) {
+        expiredKeys.push(node.key);
       }
+    }
+    for (let key of expiredKeys) {
+      const node = this.map.get(key);
+      this._removeNode(node);
+      this.map.delete(key);
     }
     return this.map.size;
   }
