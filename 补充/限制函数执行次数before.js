@@ -1,9 +1,10 @@
-function before(fn, count) {
-  let temp = count;
+function before(fn, time) {
+  // 超过执行次数，返回最后一次的结果
+  let result;
   return function (...args) {
-    if (temp > 0) {
-      temp--;
-      return fn.apply(this, args);
+    if (time-- > 0) {
+      result = fn.apply(this, args);
     }
+    return result;
   };
 }
