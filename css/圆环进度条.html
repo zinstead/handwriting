@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .progress {
+        width: 200px;
+        height: 200px;
+        background: conic-gradient(
+          green var(--progress),
+          rgba(128, 128, 128, 0.2) var(--leave)
+        );
+        position: relative;
+        border-radius: 50%;
+      }
+
+      .progress::before {
+        content: attr(data-progress);
+        width: 180px;
+        height: 180px;
+        background: white;
+        position: absolute;
+        inset: 10px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 180px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="progress"
+      style="--progress: 75%; --leave: 25%"
+      data-progress="75%"
+    ></div>
+  </body>
+</html>
